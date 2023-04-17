@@ -2,8 +2,9 @@ import { Link } from "react-router-dom"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { BASE_URL } from "../constants/url"
+import { BASE_URL }  from "../constants/url"
 import { useState } from "react"
+import minilogo from "../assets/images/minilogo.png"
 
 export default function SignUp() {
 
@@ -20,17 +21,20 @@ export default function SignUp() {
         setDisable(true)
         e.preventDefault()
 
-        const promise = axios.post(`${BASE_URL}/`, body)
+        const { email, password, username } = body;
+
+        const promise = axios.post(`${BASE_URL}/sign-up`, {email, password, username})
         promise.then(res => {
 
             console.log(res.data);
             navigate("/")
         })
         promise.catch(err => {
-            console.log(err.response.data.message)
+            console.log(err)
             setDisable(false)
             alert("Dados cadastrais inválidos!")
         })
+        console.log(body)
     }
 
     return (
@@ -38,6 +42,7 @@ export default function SignUp() {
             <ContainerLeft>
                 <p>HEARTHSTONE</p>
                 <h1>TOP TRUMPS</h1>
+                <img src={minilogo} alt="Carta 1" />
             </ContainerLeft>
             <ContainerRight>
                 <ContainerInput>
@@ -78,7 +83,7 @@ const ContainerLeft = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 250px;
+    padding-top: 150px;
 
     @media (max-width: 1100px) {
         width: 100%;
@@ -90,33 +95,53 @@ const ContainerLeft = styled.div`
     
 
     p{
-        color: white;
+        color: gold;
         font-family: 'Passion One', sans-serif;
         font-weight: 700;
-        font-size: 106px;
+        font-size: 95px;
         padding-left: 50px;
 
         @media (max-width: 1100px) {
         align-items:center;
         font-size: 75px;
         padding-left: 0px;
+        display: none;
+    }
+    }
+    img{
+        width: 300px;
+        height: 300px;
+        border-radius: 60px;
+        margin-bottom: 50px;
+        margin-left: 50px;
+        margin-top: 20px;
+
+        @media (max-width: 1100px) {
+        align-items:center;
+        font-size: 75px;
+        margin-right: 50px;
+        width: 200px;
+        height: 200px;
+        border: 5px solid gold;
     }
     }
 
     h1{
-        color: white;
-        font-family: 'Passion One', sans-serif;
+        color: darkgoldenrod;
+        font-family: 'Oswald', sans-serif;
         font-weight: 700;
-        font-size: 43px;
+        font-size: 63px;
         line-height: 66px;
         padding-left: 50px;
 
         @media (max-width: 1100px) {
         font-size: 30px;
         padding-left: 35px;
-        line-height: 50px
+        line-height: 50px;
+        display: none;
     }
     }
+
 `
 const ContainerRight = styled.div`
     width: 30%;

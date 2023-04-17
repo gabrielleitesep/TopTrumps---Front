@@ -1,8 +1,93 @@
 import styled from 'styled-components';
-import img1 from "../assets/images/1.png"
+import img1 from "../assets/images/9.png"
 import img2 from "../assets/images/cardback.png"
 import logo from "../assets/images/logo3.jpg"
+import { useState } from 'react';
+import deck from '../constants/deck';
+import { useEffect } from 'react';
 
+function SuperTrunfo() {
+
+  const [playerDeck, setPlayerDeck] = useState([]);
+  const [computerDeck, setComputerDeck] = useState([]);
+  const [selectedAttribute, setSelectedAttribute] = useState('');
+  const [currentRound, setCurrentRound] = useState(0);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [computerScore, setComputerScore] = useState(0);
+
+  useEffect(() => {
+    const gg = deck
+    shuffleAndDistributeCards(gg);
+  }, []);
+  function shuffleAndDistributeCards() {
+    const shuffledDeck = deck.sort(() => Math.random() - 0.5);
+    const deck1 = shuffledDeck.slice(0, 5);
+    const deck2 = shuffledDeck.slice(5, 10);
+
+    setPlayerDeck(deck1);
+    setComputerDeck(deck2);
+    console.log(deck1)
+  }
+  
+  const handleAttributeSelect = (event) => {
+    setSelectedAttribute(event.target.value);
+  };
+  
+  const handleNextRound = () => {
+    setCurrentRound(currentRound + 1);
+  }
+
+  const compareAttributes = (playerCard, computerCard, selectedAttribute) => {
+    const playerAttributeValue = `${playerCard}.${selectedAttribute}`;
+    const computerAttributeValue = `${computerCard}.${selectedAttribute}`;
+
+    if (playerAttributeValue > computerAttributeValue) {
+      setPlayerScore(playerScore + 1);
+      alert("Venceu!");
+    } else if (playerAttributeValue < computerAttributeValue) {
+      setComputerScore(computerScore + 1);
+      alert("Perdeu!");
+    } else {
+      alert("Empate!");
+    }
+  }
+
+  return (
+    <Container>
+      <Cover>
+      <CoverImage src={logo} alt="Carta 1" />
+      </Cover>
+      <CardWrapper>
+        <Card>
+          <CardTitle>Jogador</CardTitle>
+          <CardImage src={img1} alt="Carta 1" />
+        </Card>
+        <ButtonWrapper>
+          <Button>Começar Jogo</Button>
+          <Button>Próxima Rodada</Button>
+        </ButtonWrapper>
+        <Card>
+          <CardTitle>Oponente</CardTitle>
+          <CardBackImage src={img2} alt="Carta 2" />
+        </Card>
+      </CardWrapper>
+      <SelectWrapper>
+        <SelectLabel>Escolha o Atributo:</SelectLabel>
+        <Select  onChange={handleAttributeSelect}>
+          <option value="ataque">Ataque</option>
+          <option value="vida">Vida</option>
+          <option value="mana">Mana</option>
+          <option value="raridade">Raridade</option>
+        </Select>
+        <p>Você selecionou o atributo: {selectedAttribute}</p>
+      </SelectWrapper>
+    </Container>
+  );
+};
+
+export default SuperTrunfo;
+
+//Styled Components
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -67,7 +152,6 @@ const CardBackImage = styled.img`
   width: 300px;
   height: 400px;
   object-fit: contain;
-  border-radius: 17px;
   margin-bottom: 10px;
   padding-top: 25px;
   margin-top: 20px;
@@ -129,38 +213,3 @@ const Select = styled.select`
   border: 3px solid darkgoldenrod;
   border-radius: 10px;
 `;
-
-const SuperTrunfo = () => {
-  return (
-    <Container>
-      <Cover>
-      <CoverImage src={logo} alt="Carta 1" />
-      </Cover>
-      <CardWrapper>
-        <Card>
-          <CardTitle>Jogador</CardTitle>
-          <CardImage src={img1} alt="Carta 1" />
-        </Card>
-        <ButtonWrapper>
-          <Button>Começar Jogo</Button>
-          <Button>Próxima Rodada</Button>
-        </ButtonWrapper>
-        <Card>
-          <CardTitle>Oponente</CardTitle>
-          <CardBackImage src={img2} alt="Carta 2" />
-        </Card>
-      </CardWrapper>
-      <SelectWrapper>
-        <SelectLabel>Escolha o Atributo:</SelectLabel>
-        <Select>
-          <option value="atributo1">Ataque</option>
-          <option value="atributo2">Defesa</option>
-          <option value="atributo3">Mana</option>
-          <option value="atributo3">Estilo</option>
-        </Select>
-      </SelectWrapper>
-    </Container>
-  );
-};
-
-export default SuperTrunfo;

@@ -6,6 +6,7 @@ import { useContext } from "react";
 import styled from "styled-components"
 import { BASE_URL } from "../constants/url";
 import { MyContext } from "../contexts/MyContext";
+import minilogo from "../assets/images/minilogo.png"
 
 export default function SignIn() {
     const { setToken, setData } = useContext(MyContext)
@@ -17,6 +18,7 @@ export default function SignIn() {
     function sign_in(e) {
         e.preventDefault()
         setDisable(true)
+
         const body = {
             email: email,
             password: password
@@ -26,7 +28,8 @@ export default function SignIn() {
             alert("É necessários preencher todos os campos!")
         }
 
-        const promise = axios.post(`${BASE_URL}/signin`, body)
+        const promise = axios.post(`${BASE_URL}/sign-in`, body)
+
         promise.then(res => {
             localStorage.setItem("token", res.data.token)
             setToken(res.data.token)
@@ -34,11 +37,10 @@ export default function SignIn() {
             const dataObj = JSON.stringify(res.data)
             localStorage.setItem("data", dataObj)
             setData(res.data)
-
             navigate("/game")
         })
         promise.catch(err => {
-            console.log(err.response.data.message)
+            console.log(err)
             setDisable(false)
             alert("Usuário ou senha inválidos")
         })
@@ -49,6 +51,7 @@ export default function SignIn() {
             <ContainerLeft>
                 <p>HEARTHSTONE</p>
                 <h1>TOP TRUMPS</h1>
+                <img src={minilogo} alt="Carta 1" />
             </ContainerLeft>
             <ContainerRight>
                 <ContainerInput>
@@ -87,7 +90,7 @@ const ContainerLeft = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 250px;
+    padding-top: 150px;
 
     @media (max-width: 1100px) {
         width: 100%;
@@ -99,31 +102,50 @@ const ContainerLeft = styled.div`
     
 
     p{
-        color: white;
+        color: gold;
         font-family: 'Passion One', sans-serif;
         font-weight: 700;
-        font-size: 106px;
+        font-size: 95px;
         padding-left: 50px;
 
         @media (max-width: 1100px) {
         align-items:center;
         font-size: 75px;
         padding-left: 0px;
+        display: none;
+    }
+    }
+    img{
+        width: 300px;
+        height: 300px;
+        border-radius: 60px;
+        margin-bottom: 50px;
+        margin-left: 50px;
+        margin-top: 20px;
+
+        @media (max-width: 1100px) {
+        align-items:center;
+        font-size: 75px;
+        margin-right: 50px;
+        width: 200px;
+        height: 200px;
+        border: 5px solid gold;
     }
     }
 
     h1{
-        color: white;
-        font-family: 'Passion One', sans-serif;
+        color: darkgoldenrod;
+        font-family: 'Oswald', sans-serif;
         font-weight: 700;
-        font-size: 43px;
+        font-size: 63px;
         line-height: 66px;
         padding-left: 50px;
 
         @media (max-width: 1100px) {
         font-size: 30px;
         padding-left: 35px;
-        line-height: 50px
+        line-height: 50px;
+        display: none;
     }
     }
 

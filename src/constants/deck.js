@@ -10,7 +10,7 @@ import img9 from "../assets/images/9.png"
 import img10 from "../assets/images/10.png"
 
 
-export const deck = [
+const deck = [
     {
       imagem: {img1},
       ataque: 3,
@@ -82,3 +82,5 @@ export const deck = [
       raridade: 3
     }
   ];
+
+  export default deck
